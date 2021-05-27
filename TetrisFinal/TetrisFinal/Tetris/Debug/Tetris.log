@@ -1,0 +1,2 @@
+﻿  tetris.cpp
+C:\Users\huber\Downloads\Tetris-Game-master\Tetris-Game-master\Tetris\tetris.cpp(5,10): fatal error C1083: Nie można otworzyć pliku dołącz: 'GL/glut.h': No such file or directory
