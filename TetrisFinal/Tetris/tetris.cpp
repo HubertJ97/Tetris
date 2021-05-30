@@ -1,12 +1,14 @@
-#include <windows.h>
-#include <stdlib.h>
+
+#include <stdlib.h> 
 #include <iostream>
-#include <ctime>
-#include <GL/glut.h>
-#include <string>
-#include <sstream>
-#include <fstream>
+#include <ctime>/// ctime Biblioteka wykorzystana do obs³ugi opadu "klocka" w czasie
+#include <GL/glut.h>/// GL/glut.h biblioteka openGL wykorzystywana do oprawy graficznej aplikacji oraz sterowania
+#include <string>/// string Wczytywanie tekstu
+#include <sstream>/// sstream  Formatowanie napisów
+#include <fstream>///fstream Biblioteka wykorzystywana do zapisu najlepszego wyniku w pliku txt
+
 using namespace std;
+
 
 /** 
     Tablica kolorów RGB
@@ -37,7 +39,7 @@ float colors2[][3] = {
     Zmienne dla planszy, kszta³tu oraz wyniku
 **/
 int board[10][25] = { {0} };
-int curr_shape[4][2] = { { -1 } };
+int curr_shape[4][2] = { { 0 } };
 int currShapeType = 0;
 int currShapeColor = 0;
 int direction = 1;
@@ -174,66 +176,66 @@ void nowyKsztalt() {
 
     /// Pod³u¿ny klocek
     if (randNum == 0) {
-        ///Wspó³rzêdne  x 
+        //Wspó³rzêdne  x 
         curr_shape[0][0] = rand() % 7;
         curr_shape[1][0] = curr_shape[0][0] + 1;
         curr_shape[2][0] = curr_shape[0][0] + 2;
         curr_shape[3][0] = curr_shape[0][0] + 3;
-        /// Wspó³rzêdne  y
+        // Wspó³rzêdne  y
         curr_shape[0][1] = curr_shape[1][1] = curr_shape[2][1] = curr_shape[3][1] = 21;
     }
 
     // Kwadrat
     else if (randNum == 1) {
-        /// Wspó³rzêdne  x 
+        // Wspó³rzêdne  x 
         curr_shape[0][0] = rand() % 9;
         curr_shape[1][0] = curr_shape[0][0] +1;
         curr_shape[2][0] = curr_shape[0][0];
         curr_shape[3][0] = curr_shape[1][0];
-        /// Wspó³rzêdne  y
+        // Wspó³rzêdne  y
         curr_shape[0][1] = curr_shape[1][1] = 22;
         curr_shape[2][1] = curr_shape[3][1] = 21;
     }
 
     //Klocek w kszta³cie litery L
     else if (randNum == 2) {
-        /// Wspó³rzêdne  x 
+        // Wspó³rzêdne  x 
         curr_shape[0][0] = rand() % 8;
         curr_shape[1][0] = curr_shape[0][0];
         curr_shape[2][0] = curr_shape[0][0] + 1;
         curr_shape[3][0] = curr_shape[1][0] + 2;
-        /// Wspó³rzêdne  y
+        // Wspó³rzêdne  y
         curr_shape[0][1] = 22;
         curr_shape[1][1] = curr_shape[2][1] = curr_shape[3][1] = 21;
     }
 
     // Klocek w kszta³cie litery S 
     else if (randNum == 3) {
-        /// Wspó³rzêdne  x 
+        // Wspó³rzêdne  x 
         curr_shape[0][0] = rand() % 8 + 1;
         curr_shape[1][0] = curr_shape[0][0] + 1;
         curr_shape[2][0] = curr_shape[0][0];
         curr_shape[3][0] = curr_shape[0][0] - 1;
-        /// Wspó³rzêdne  y
+        // Wspó³rzêdne  y
         curr_shape[0][1] = curr_shape[1][1] = 22;
         curr_shape[2][1] = curr_shape[3][1] = 21;
     }
 
     // Klocek w kszta³cie litery T 
     else if (randNum == 4) {
-        /// Wspó³rzêdne  x 
+        // Wspó³rzêdne  x 
         curr_shape[0][0] = rand() % 8;
         curr_shape[1][0] = curr_shape[0][0] + 1;
         curr_shape[2][0] = curr_shape[0][0] + 2;
         curr_shape[3][0] = curr_shape[1][0];
-        /// Wspó³rzêdne y
+        // Wspó³rzêdne y
         curr_shape[0][1] = curr_shape[1][1] = curr_shape[2][1] = 22;
         curr_shape[3][1] = 21;
     }
 }
 
 /**
-    pozycjaDomyslna: Usuwanie pozycji poprzedniego "klocka" (Przywracanie pozycji do domyœlnej) 
+    pozycjaDomyslna: Zerowanie tablicy
     **/
 void pozycjaDomyslna() {
     for (int a = 0; a < 10; a++) {
@@ -287,22 +289,22 @@ void ruchPrawo() {
     **/
 void rotacjaDlugi() {
     if (direction == 1 || direction == 3) {
-        /// Nowe wspó³rzêdne  x 
+        // Nowe wspó³rzêdne  x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[2][0] = tempPoints[3][0] = tempPoints[0][0];
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1] - 1;
         tempPoints[2][1] = tempPoints[0][1] - 2;
         tempPoints[3][1] = tempPoints[0][1] - 3;
     }
     else if (direction == 2 || direction == 4) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[0][0] + 1;
         tempPoints[2][0] = tempPoints[0][0] + 2;
         tempPoints[3][0] = tempPoints[0][0] + 3;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[3][1] = tempPoints[0][1];
     }
@@ -313,48 +315,48 @@ void rotacjaDlugi() {
     **/
 void rotacjaL() {
     if (direction == 1) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[0][0] + 1;
         tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0];
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1];
         tempPoints[2][1] = tempPoints[0][1] - 1;
         tempPoints[3][1] = tempPoints[0][1] - 2;
     }
     else if (direction == 2) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[0][0] + 1;
         tempPoints[2][0] = tempPoints[0][0] + 2;
         tempPoints[3][0] = tempPoints[0][0] + 2;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[0][1];
         tempPoints[3][1] = tempPoints[2][1] - 1;
     }
     else if (direction == 3) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] + 1;
         tempPoints[1][0] = tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0] - 1;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1] - 1;
         tempPoints[2][1] = tempPoints[0][1] - 2;
         tempPoints[3][1] = tempPoints[0][1] - 2;
     }
     else if (direction == 4) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] - 1;
         tempPoints[1][0] = tempPoints[0][0];
         tempPoints[2][0] = tempPoints[0][0] + 1;
         tempPoints[3][0] = tempPoints[0][0] + 2;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[3][1] = tempPoints[0][1] - 1;
     }
@@ -365,25 +367,25 @@ void rotacjaL() {
     **/
 void rotacjaS() {
     if (direction == 1 || direction == 3) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] - 1;
         tempPoints[1][0] = tempPoints[0][0];
         tempPoints[2][0] = tempPoints[0][0] + 1;
         tempPoints[3][0] = tempPoints[0][0] + 1;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[0][1] - 1;
         tempPoints[3][1] = tempPoints[0][1] - 2;
     }
     else if (direction == 2 || direction == 4) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] + 1;
         tempPoints[1][0] = tempPoints[0][0] + 1;
         tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0] - 1;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1];
         tempPoints[2][1] = tempPoints[0][1] - 1;
@@ -396,46 +398,46 @@ void rotacjaS() {
     **/
 void rotacjaT() {
     if (direction == 1) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] + 1;
         tempPoints[1][0] = tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0] - 1;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1] - 1;
         tempPoints[2][1] = tempPoints[0][1] - 2;
         tempPoints[3][1] = tempPoints[0][1] - 1;
     }
     else if (direction == 2) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[0][0] - 1;
         tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0] + 1;
-        /// new Wspó³rzêdne  y
+        // new Wspó³rzêdne  y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[3][1] = tempPoints[0][1] - 1;
     }
     else if (direction == 3) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[0][0] = tempPoints[0][0] - 1;
         tempPoints[1][0] = tempPoints[2][0] = tempPoints[0][0];
         tempPoints[3][0] = tempPoints[0][0] + 1;
-        /// Nowe wspó³rzêdne  y
+        // Nowe wspó³rzêdne  y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[0][1] - 1;
         tempPoints[2][1] = tempPoints[0][1] - 2;
         tempPoints[3][1] = tempPoints[0][1] - 1;
     }
     else if (direction == 4) {
-        /// Nowe wspó³rzêdne   x 
+        // Nowe wspó³rzêdne   x 
         tempPoints[0][0] = curr_shape[0][0];
         tempPoints[1][0] = tempPoints[0][0] + 1;
         tempPoints[2][0] = tempPoints[0][0] + 2;
         tempPoints[3][0] = tempPoints[0][0] + 1;
-        /// Nowe wspó³rzêdne   y
+        // Nowe wspó³rzêdne   y
         tempPoints[0][1] = curr_shape[0][1];
         tempPoints[1][1] = tempPoints[2][1] = tempPoints[0][1];
         tempPoints[3][1] = tempPoints[0][1] - 1;
@@ -599,7 +601,9 @@ void koniecGry() {
     }
 }
 
-//nazwaGry: Wyœwietlanie nazwy gry nad wynikiem
+/**
+    nazwaGry: Wyœwietlanie nazwy gry nad wynikiem
+**/
 void nazwaGry() {
     wyswietlTekst(320, 400, "Tetris");
 }
